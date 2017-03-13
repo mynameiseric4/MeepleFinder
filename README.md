@@ -1,2 +1,2 @@
 # MeepleFinder
-Repo for Galvanize capstone project
+Board game recommender system to find new board games!
