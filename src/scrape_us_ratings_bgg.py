@@ -13,6 +13,7 @@ with open('data/us_users_urls.csv') as f:
 for i, user in enumerate(us_user_urls):
     us_user_urls[i] = str(user.strip('\"'))
 
+
 def get_boardgamegeek_user_info(query, browser, delay=5):
     user_info = []
     search_url = "https://boardgamegeek.com/collection{}?rated=1&subtype=boardgame&ff=1".format(query)
@@ -20,14 +21,14 @@ def get_boardgamegeek_user_info(query, browser, delay=5):
     while True:
         html = browser.page_source
         soup = BeautifulSoup(html, 'html.parser')
-        product_tags = soup.find_all('tr', {"id" : lambda x: x and x.startswith('row')})
+        product_tags = soup.find_all('tr', {"id": lambda x: x and x.startswith('row')})
         user_info.append([get_user_info(t) for t in product_tags])
         try:
             browser.find_element_by_link_text('»').click()
         except NoSuchElementException:
             html = browser.page_source
             soup = BeautifulSoup(html, 'html.parser')
-            product_tags = soup.find_all('tr', {"id" : lambda x: x and x.startswith('row')})
+            product_tags = soup.find_all('tr', {"id": lambda x: x and x.startswith('row')})
             user_info.append([get_user_info(t) for t in product_tags])
             break
     time.sleep(delay)
@@ -35,6 +36,7 @@ def get_boardgamegeek_user_info(query, browser, delay=5):
     for i in xrange(1, len(user_info)):
         ratings += user_info[i]
     return list(set(ratings))
+
 
 def get_user_info(product_tag):
     title_elements = product_tag.find_all("div")
@@ -48,7 +50,8 @@ def get_user_info(product_tag):
         date = ' '.join(title_elements[8].text.split()[0:2])
         date = date.strip('*')
         return rated_games, float(ratings), date
-    
+
+
 browser = selenium.webdriver.PhantomJS(executable_path='/Users/ericyatskowitz/galvanize_work/capstone/phantomjs-2.1.1-macosx/bin/phantomjs')
 user_info = {}
 count = 0
