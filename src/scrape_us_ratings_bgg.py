@@ -5,7 +5,11 @@ import itertools
 import pandas as pd
 import numpy as np
 import re
+import boto3
 from selenium.common.exceptions import NoSuchElementException
+
+s3_client = boto3.client('s3')
+s3_client.download_file('capstone-eric', 'data/us_users_urls.csv')
 
 with open('data/us_users_urls.csv') as f:
     for line in f:
@@ -62,7 +66,7 @@ for url in us_user_urls:
     time.sleep(5)
     count += 1
     if count % 3000 == 0:
-        np.save('data/us_ratings_data.npy', user_info)
+        s3_client.upload_file('capstone-eric', 'data/us_ratings_data.npy')
 browser.quit()
 
-np.save('data/us_ratings_data.npy', user_info)
+s3_client.upload_file('capstone-eric', 'data/us_ratings_data.npy')
