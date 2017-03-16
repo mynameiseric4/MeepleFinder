@@ -56,7 +56,7 @@ def get_user_info(product_tag):
         return rated_games, float(ratings), date
 
 
-browser = selenium.webdriver.PhantomJS(executable_path='/Users/ericyatskowitz/galvanize_work/capstone/phantomjs-2.1.1-macosx/bin/phantomjs')
+browser = selenium.webdriver.PhantomJS()
 user_info = {}
 count = 0
 for url in us_user_urls:
@@ -65,7 +65,7 @@ for url in us_user_urls:
     user_info[user] = user_ratings
     time.sleep(5)
     count += 1
-    if count % 3000 == 0:
+    if count % 1000 == 0:
         s3_client.upload_file('capstone-eric', 'data/us_ratings_data.npy')
 browser.quit()
 
