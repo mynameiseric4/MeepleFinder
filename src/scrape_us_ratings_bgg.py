@@ -7,13 +7,12 @@ import numpy as np
 import re
 import boto3
 from selenium.common.exceptions import NoSuchElementException
+import os
 
 s3_client = boto3.client('s3')
-s3_client.download_file('capstone-eric', 'data/us_users_urls.csv')
+data = s3_client.get_object(Bucket='capstone-eric', Key='data/us_users_urls.csv')['Body'].read()
 
-with open('data/us_users_urls.csv') as f:
-    for line in f:
-        us_user_urls = line.split(',')
+us_user_urls = data.split(',')
 for i, user in enumerate(us_user_urls):
     us_user_urls[i] = str(user.strip('\"'))
 
@@ -65,8 +64,10 @@ for url in us_user_urls:
     user_info[user] = user_ratings
     time.sleep(5)
     count += 1
-    if count % 1000 == 0:
-        s3_client.upload_file('capstone-eric', 'data/us_ratings_data.npy')
+    if count % 500 == 0:
+        user_info_str = str(user_info)
+        s3_client.put_object(Bucket='capstone-eric', Key='data/us_ratings_data.npy', Body=user_info_str)
 browser.quit()
 
-s3_client.upload_file('capstone-eric', 'data/us_ratings_data.npy')
+user_info_str = str(user_info)
+s3_client.put_object(Bucket='capstone-eric', Key='data/us_ratings_data.npy', Body=user_info_str)
