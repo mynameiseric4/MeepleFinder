@@ -52,8 +52,9 @@ def get_games():
         user_input_df.append(spark.createDataFrame(user_df))
     pred_array = np.zeros((1, len(als_data['board_game'].unique())))
     for user in user_input_df:
-        pred_array += als_model.transform(user).toPandas()['prediction'].values
-        top_3_games = []
+        temp_array = als_model.transform(user).toPandas()['prediction'].values
+        pred_array += temp_array - temp_array.mean()
+    top_3_games = []
     for i in xrange(3):
         top_3_games.append(pred_array.argmax())
         pred_array = np.delete(pred_array, pred_array.argmax())
