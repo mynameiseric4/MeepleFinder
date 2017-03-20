@@ -25,6 +25,8 @@ user_index = np.load('wa_user_dict.npy').item()
 als_data = pd.read_csv('als_ready_wa_ratings_data.csv')
 board_games = dict((y,x) for x,y in board_game_index.iteritems())
 ratings_df = pd.read_csv('new_wa_ratings_data.csv', index_col='Username')
+just_ranking_info = pd.read_csv('just_ranking_info.csv')
+just_ranking_info.drop('Unnamed: 0', axis=1, inplace=True)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -35,6 +37,7 @@ def index():
 def get_games():
     user_data = request.json
     game1, game2, game3 = user_data['game1'], user_data['game2'], user_data['game3']
+    input_games = [game1, game2, game3]
     new_user = pd.DataFrame({'new_user': {game1:10, game2:10, game3:10}}, index=ratings_df.columns)['new_user']
     new_user.fillna(0, inplace=True)
     cos_sim_dict = {}
@@ -52,15 +55,20 @@ def get_games():
         user_input_df.append(spark.createDataFrame(user_df))
     pred_array = np.zeros((1, len(als_data['board_game'].unique())))
     for user in user_input_df:
-        temp_array = als_model.transform(user).toPandas()['prediction'].values
-        pred_array += temp_array - temp_array.mean()
-    top_3_games = []
-    for i in xrange(3):
-        top_3_games.append(pred_array.argmax())
-        pred_array = np.delete(pred_array, pred_array.argmax())
+        preds = als_model.transform(user).toPandas()
+        preds.sort_values('board_game', inplace=True)
+        pred_array += preds['prediction'].values
+    pred_array = pred_array[0]
+    for i, game in enumerate(pred_array):
+        try:
+            pred_array[i] *= ((just_ranking_info[just_ranking_info['Title'] == board_games[i]]['Num Ratings'].values[0]/66420.)/2+1)
+        except IndexError:
+            pred_array[i] = 0
+    top_3_games = pred_array.argsort()[-6:][::-1]
     games = []
     for ind in top_3_games:
-        games.append(board_games[ind])
+        if board_games[ind] not in input_games:
+            games.append(board_games[ind])
     new_game1 = games[0]
     new_game2 = games[1]
     new_game3 = games[2]
