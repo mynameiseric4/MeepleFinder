@@ -22,11 +22,16 @@ import operator
 app = Flask(__name__)
 board_game_index = np.load('board_game_dict.npy').item()
 user_index = np.load('wa_user_dict.npy').item()
+url_index = pd.read_csv('just_urls.csv')
+url_index = url_index.set_index('Title')
 als_data = pd.read_csv('als_ready_wa_ratings_data.csv')
 board_games = dict((y,x) for x,y in board_game_index.iteritems())
 ratings_df = pd.read_csv('new_wa_ratings_data.csv', index_col='Username')
 just_ranking_info = pd.read_csv('just_ranking_info.csv')
-just_ranking_info.drop('Unnamed: 0', axis=1, inplace=True)
+just_ranking_info.set_index('Title', inplace=True)
+num_ratings = just_ranking_info['Num Ratings']
+avg_ratings = just_ranking_info['Avg Rating']
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -50,21 +55,21 @@ def get_games():
     top_3_keys = [user_index[top_3[i][0]] for i in xrange(len(top_3))]
     user_input_df = []
     for user in top_3_keys:
-        user_df = pd.DataFrame(list(product([user], als_data['board_game'].unique())))
+        user_df = pd.DataFrame(list(product([user], just_ranking_info.index)))
         user_df = user_df.rename(columns={0:'user', 1:'board_game'})
         user_input_df.append(spark.createDataFrame(user_df))
-    pred_array = np.zeros((1, len(als_data['board_game'].unique())))
+    count = 0
     for user in user_input_df:
         preds = als_model.transform(user).toPandas()
-        preds.sort_values('board_game', inplace=True)
-        pred_array += preds['prediction'].values
-    pred_array = pred_array[0]
-    for i, game in enumerate(pred_array):
-        try:
-            pred_array[i] *= ((just_ranking_info[just_ranking_info['Title'] == board_games[i]]['Num Ratings'].values[0]/66420.)/2+1)
-        except IndexError:
-            pred_array[i] = 0
-    top_3_games = pred_array.argsort()[-6:][::-1]
+        preds.set_index('board_game', inplace=True)
+        if count == 0:
+            pred_array = preds['prediction']
+        else:
+            pred_array += preds['prediction']
+        count += 1
+    pred_array *= (2./3.)
+    pred_array += (avg_ratings/3.)
+    top_3_games = pred_array.sort_values(ascending=False)[:6][::-1].index
     games = []
     for ind in top_3_games:
         if board_games[ind] not in input_games:
@@ -73,7 +78,7 @@ def get_games():
     new_game2 = games[1]
     new_game3 = games[2]
 
-    return '<table><tr><th>Game</th></tr><tr><td>'+str(new_game1)+'</td></tr><tr><td>'+str(new_game2)+'</td></tr><tr><td>'+str(new_game3)+'</td></tr></table>'
+    return '<p style="font-size:20px"><b><font color="white"> Here are your potentially new favorite board games with variable accuracy: </font><table><tr><th>Game:</th><th>BGG Link:</th></tr><tr><td>'+str(new_game1)+'</td><td><a href='"https://boardgamegeek.com{}".format(url_index.loc[new_game1]['Game URL'])+'target="_blank">'+str(new_game1)+'</a></td></tr><tr><td>'+str(new_game2)+'</td><td><a href='"https://boardgamegeek.com{}".format(url_index.loc[new_game2]['Game URL'])+'target="_blank">'+str(new_game2)+'</a></td></tr><tr><td>'+str(new_game3)+'</td><td><a href='"https://boardgamegeek.com{}".format(url_index.loc[new_game3]['Game URL'])+'target="_blank">'+str(new_game3)+'</a></td></tr></table>'
 
 if __name__ == '__main__':
     # Start Flask app
