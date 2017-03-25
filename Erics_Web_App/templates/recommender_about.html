@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+      <a class="navbar-brand .navbar-left" href="/">
+        <img align="left" alt="Brand" src="https://s3-us-west-2.amazonaws.com/ericyatskowitz/Meeple.png" style="width:38px;height:38px;">
+      </a>
+    <ul class="nav">
+      <li><a href="/">Home</a></li>
+      <li class="active"><a href="/about">About</a></li>
+      <li><a href="/how_it_works">How it works</a></li>
+    </ul>
+  </div>
+</div>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>About</title>
+  <meta name="description" content="Board Game Recommender">
+  <meta name="author" content="Eric Yatskowitz">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='jquery.js') }}">
+    </script>
+    <script type="text/javascript"
+            src="{{ url_for('static', filename='app.js') }}">
+    </script>
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+    <script  type="text/javascript" src="static/bootstrap/js/typeahead.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function(){
+        // Constructs the suggestion engine
+        var board_games = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            // The url points to a json file that contains an array of board game titles
+            prefetch:{
+                url: 'static/game_titles.json'
+            }
+        });
+
+        board_games.clearPrefetchCache();
+        board_games.initialize();
+
+        // Initializing the typeahead with remote dataset
+        $('#prefetch .typeahead').typeahead(null, {
+            name: 'board_games',
+            source: board_games,
+            limit: 5 /* Specify maximum number of suggestions to be displayed */
+        });
+    });
+    </script>
+
+    <img src="https://s3-us-west-2.amazonaws.com/ericyatskowitz/Meeple.png" alt="Big Meeple" style="float:left;width:500px;height:500px;">
+</head>
+
+<style>
+
+body {
+    background-color:black;
+    background-repeat:no-repeat;
+    background-size:cover;
+    font-color: white
+    position:relative;
+    z-index: -1;
+}
+
+div#row {
+    position:relative;
+    z-index: -1;
+}
+
+input {
+    position:relative;
+    z-index: -1;
+}
+
+p {
+    line-height: 120%;
+}
+
+</style>
+
+<body>
+
+<div class="container">
+
+    <h1><font color="white">This page tells you a bit about Meeple Finder Mediocre Board Game Recommender, where it came from and who it is intended for.</font></h1>
+
+    <div class="row">
+        <p style="font-size:24px"><font color="white">This project was inspired by my many trips to my <b>local board game store</b>, trying to figure out which board game I should buy or play next. With over <b>89,000 board games</b> on boardgamegeek to search and choose from, I was having a hard time making a decision. In January 2017, I started a <b>Data Science Immersive</b> program at Galvanize in Seattle, WA, and for my final project, I made this site/model. This site is intended for people who are avid board gamers who want to branch out and try something new. I hope you enjoy the site. Check out the How it works tab to learn a bit more about what's going on behind the scenes.</font></p>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

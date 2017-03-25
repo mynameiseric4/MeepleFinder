@@ -3,11 +3,13 @@
 
 <div class="navbar navbar-inverse">
   <div class="navbar-inner">
-    <a class="brand" href="#">Meeple Finder</a>
+      <a class="navbar-brand .navbar-left" href="/">
+        <img align="left" alt="Brand" src="https://s3-us-west-2.amazonaws.com/ericyatskowitz/Meeple.png" style="width:38px;height:38px;">
+      </a>
     <ul class="nav">
-      <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">How it works</a></li>
+      <li class="active"><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/how_it_works">How it works</a></li>
     </ul>
   </div>
 </div>
@@ -18,7 +20,6 @@
   <title>Meeple Finder!</title>
   <meta name="description" content="Board Game Recommender">
   <meta name="author" content="Eric Yatskowitz">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script type="text/javascript"
@@ -28,7 +29,7 @@
             src="{{ url_for('static', filename='app.js') }}">
     </script>
     <link rel="stylesheet" type="text/css"
-          href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+          href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <script  type="text/javascript" src="static/bootstrap/js/typeahead.js"></script>
 
     <script type="text/javascript">
@@ -56,6 +57,7 @@
     </script>
 
     <style type="text/css">
+
     .prefetch {
     	font-family: sans-serif;
     	position: relative;
@@ -132,7 +134,7 @@
 <style>
 
 body {
-    background-image:url(https://s3-us-west-2.amazonaws.com/ericyatskowitz/fullsizeoutput_89.jpeg);
+    background-color: black;
     background-repeat:no-repeat;
     background-size:cover;
     font-color: white
@@ -141,8 +143,15 @@ body {
 }
 
 div#row {
-    position:relative;
-    z-index: -1;
+    position: relative;
+}
+
+div#col-md-4 {
+    background-color: grey;
+}
+
+div#col-sm-6 {
+    background-color: grey;
 }
 
 input {
@@ -163,12 +172,13 @@ td, th {
 }
 
 tr:nth-child(odd) {
-    background-color: peru;
+    background-color: grey;
 }
 
 tr:nth-child(even) {
-    background-color: lightgreen;
+    background-color: white;
 }
+
 </style>
 
 <body>
@@ -178,6 +188,7 @@ tr:nth-child(even) {
     <h1><font color="white">Welcome to the Meeple Finder Mediocre Board Game Recommender</font></h1>
 
     <div class="row">
+        <p style="font-size:20px"><b><font color="white"></font></b></p>
         <p style="font-size:20px"><b><font color="white">This app will recommend a few board games for you!</font></b></p>
         <p style="font-size:20px"><b><font color="white">Please enter 3 board games that you like a lot below!</font></b></p>
 
@@ -222,14 +233,14 @@ tr:nth-child(even) {
     </form>
 
         <div class="form-group">
-          <button type="button" id="predict" class="btn-success">Find Games! </button>
+          <button type="button" id="predict" class="btn-danger">Find Games! </button>
         </div>
 
         <!-- The span has an id so that later we can fill in the solution
              using js. -->
-        <span id="prediction"></span></b></p>
     </div>
   </div>
 </div>
 </body>
+<span id="prediction"></span>
 </html>
