@@ -33,7 +33,7 @@
           href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
     <script  type="text/javascript" src="static/bootstrap/js/typeahead.js"></script>
 
-    <img src="https://s3-us-west-2.amazonaws.com/ericyatskowitz/Meeple.png" alt="Big Meeple" style="float:left;width:500px;height:500px;">
+    <img src="https://s3-us-west-2.amazonaws.com/ericyatskowitz/Meeple.png" alt="Big Meeple" style="float:left;width:480px;height:480px;">
 </head>
 
 <style>
@@ -67,10 +67,10 @@ p {
 
 <div class="container">
 
-    <h1><font color="white">This page tells you a bit about how Meeple Finder Mediocre Board Game Recommender works, what techniques are used, and where the data comes from!</font></h1>
+    <h1><font color="white">This page tells you a bit about how Meeple Finder Board Game Recommender works, what techniques are used, and where the data comes from!</font></h1>
 
     <div class="row">
-        <p style="font-size:24px"><font color="white"><p style="font-size:24px">The model I use to recommend games relies entirely on data collected from boardgamegeek.com. First the user rating data is used as input in a <i>Spark ALS</i> model to create two matrices that can be used to predict the ratings that a particular user might rate a game.<br></br>The model takes user data in the form of three games that the user <i>'likes a lot'</i>. This input is then used to find the three users in the database that are most similar to this user using a cosine similarity measure. The model then calls then collects and averages of the predicted ratings for all of the games in the database for these three users (calculated previously using ALS's <i>transform</i> method).<br></br>These ratings are then averaged together with the average user rating of the games. Finally, the top three games are taken from this list and returned to the user as their recommendations.</font></p>
+        <p style="font-size:24px"><font color="white"><p style="font-size:24px">The model I use to recommend games relies entirely on data collected from boardgamegeek.com. First the user rating data is used as input in a <i>Spark ALS</i> model to create two matrices that can be used to predict the ratings that a particular user might rate a game.<br></br>The model takes user data in the form of three games that the user <i>'likes a lot'</i>. This input is then used to find the three users in the database that are most similar to this user using a cosine similarity measure. The model then collects the averages of the predicted ratings for all of the games in the database for these three users (calculated previously using ALS's <i>transform</i> method).<br></br>These ratings are then averaged together with the average user rating of the games. Finally, the top twelve games are taken from this list and returned to the user, along with some supplementary information, as their recommendations. All code can be found at https://github.com/mynameiseric4/MeepleFinder</font></p>
 
     </div>
   </div>
