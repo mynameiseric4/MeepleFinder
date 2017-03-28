@@ -44,7 +44,7 @@ bg_data_sim = bg_data_sim.set_index('Title')
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    return render_template('recommender.html')
 
 @app.route('/about', methods=['GET'])
 def about():
