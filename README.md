@@ -1,7 +1,7 @@
 # MeepleFinder
 Board game recommender system to find new board games! Meeple Finder is up and running. Check it it at www.meepleboardgamefinder.com
 
-![gif of web app](images/Model Video GIF 2.gif)
+![gif of web app](images/ModelVideoGIF2.gif)
 
 ## Business Understanding
 Whether you are into board games or not, board gaming is a growing industry with nearly $1.2 billion in sales in 2015 in the U.S. and Canada alone (https://icv2.com/articles/news/view/35150/hobby-games-market-nearly-1-2-billion).
@@ -19,12 +19,12 @@ The board game data needed a lot of cleaning before it was ready to be converted
 + The final model used both of these as well as the average ratings of the board games. Weights for each aspect of the model were determined during the evaluation process.
 
 ## Evaluation
-For the evaluation process, I tried to mimic what the model was doing as much as possible. I did a grid search altering all three weights used in the model as well as the number of users that each new user is comapred to.
+For the evaluation process, I tried to mimic what the model was doing as much as possible. I did a grid search altering all three weights used in the model as well as the number of users that each new user is compared to.
 
 First, I held out 70 users from my training dataset. Then, for each user in the test set, I took the user's top 3 games and created a new array where these 3 games had a rating of 10 out of 10. I then do a cosine similarity with every user in the training set to find the top users that the new array best matches and average the ratings of those users from the Spark ALS transform method. Next, I average together the 3 similarity arrays collected from the board game - board game cosine similarity matrix. And finally, I add these 2 arrays to the array of average ratings for each board game and return the top 20 games. The ratings for these games by the user were averaged together to get the validation score. This process was repeated for every user in the test set for every combination of weights.
 
 Here are some of the results:
 
-![graph of how many users is best](images/User graph.png)
+![graph of how many users is best](images/Usergraph.png)
 
-![chart of weights](images/Validation weights.png)
+![chart of weights](images/Validationweights.png)
