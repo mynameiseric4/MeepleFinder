@@ -67,18 +67,18 @@ def get_games():
         cos_sim_dict[ind] = cosine(this_user.values, new_user.values)
     sorted_dict = sorted(cos_sim_dict.items(),
                          key=operator.itemgetter(1))
-    top_3 = sorted_dict[:3]
-    top_3_keys = [user_index[top_3[i][0]] for i in xrange(len(top_3))]
+    top_5 = sorted_dict[:2]
+    top_5_keys = [user_index[top_5[i][0]] for i in xrange(len(top_5))]
     user_input_df = []
     count = 0
-    for user in top_3_keys:
+    for user in top_5_keys:
         preds = pred_ratings_df[pred_ratings_df['user'] == user]['prediction'].sort_index()
         if count == 0:
             pred_array = preds
         else:
             pred_array += preds
         count += 1
-    pred_array /= 3.
+    pred_array /= 2.
     count = 0
     sim_pred = 0
     for game in input_games:
