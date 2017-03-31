@@ -28,3 +28,11 @@ Here are some of the results:
 ![graph of how many users is best](images/Usergraph.png)
 
 ![chart of weights](images/Validationweights.png)
+
+As you can see from the chart above, The evaluation process gave me mixed results. In particular, I noticed that I got similar results whether or not I included the similarity matrix (Item Weight). After making some comparisons between various weights on the web app for particular games and seeing what was recommended, I decided to keep the similarity matrix in the model because it resulted in more interesting results.
+
+## Deployment
+The model was implemented using a web app which is currently up and running at www.meepleboardgamefinder.com. While it is up and running, however, there are still a few modifications that I would like to make before final deployment.
+1. I have ratings data for the rest of the users in the U.S. that I would like to incorporate into the model, but I haven't yet figured out how to do so without slowing down the web app significantly.
+2. Add a "New to board gaming" feature to the web app that will allow people who are completely new to board games to use it.
+3. Add an NLP component to the model using game description data to assist in the classification of different board games. 
