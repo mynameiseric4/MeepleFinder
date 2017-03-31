@@ -1,7 +1,7 @@
 # MeepleFinder
 Board game recommender system to find new board games! Meeple Finder is up and running. Check it it at www.meepleboardgamefinder.com
 
-![gif of web app](images/ModelVideoGIF2.gif)
+![gif of web app](images/ModelVideoGIF3.gif)
 
 ## Business Understanding
 Whether you are into board games or not, board gaming is a growing industry with nearly $1.2 billion in sales in 2015 in the U.S. and Canada alone (https://icv2.com/articles/news/view/35150/hobby-games-market-nearly-1-2-billion).
