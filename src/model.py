@@ -44,13 +44,15 @@ als_model = ALS(
     )
 als_fit_model = als_model.fit(als_spark_df)
 
-predictions_array = list(product(als_data.loc[:, 'user'].unique(), game_rankings.index))
+just_ranking_info = pd.read_csv('/Users/ericyatskowitz/galvanize_work/MeepleFinder/data/just_ranking_info.csv')
+just_ranking_info = just_ranking_info.set_index('Title')
+predictions_array = list(product(als_data.loc[:, 'user'].unique(), just_ranking_info.index))
 predictions_df = pd.DataFrame(predictions_array, columns=['user', 'board_game'])
 spark_pre_predictions_df = spark.createDataFrame(predictions_df)
 spark_predictions_df = als_fit_model.transform(spark_pre_predictions_df)
 pred_ratings_df = spark_predictions_df.toPandas()
 pred_ratings_df.fillna(0, inplace=True)
-pred_ratings_df = to_csv('pred_ratings_df.csv')
+pred_ratings_df.to_csv('pred_ratings_df.csv')
 
 bg_data_with_dummies = pd.read_csv('model_ready_bg_data.csv')
 bg_data_with_dummies = bg_data_with_dummies.set_index('Title')
@@ -61,6 +63,10 @@ x_scaled = min_max_scaler.fit_transform(x)
 normalized_als_df = pd.DataFrame(x_scaled,
                                  index=bg_data_with_dummies_als.index,
                                  columns=bg_data_with_dummies_als.columns)
+
+for game in normalized_als_df.index:
+    if game not in just_ranking_info.index:
+        normalized_als_df.drop(game, inplace=True)
 
 Y = pdist(normalized_als_df, 'cosine')
 Y = squareform(Y)
