@@ -35,4 +35,4 @@ As you can see from the chart above, The evaluation process gave me mixed result
 The model was implemented using a web app which is currently up and running at www.meepleboardgamefinder.com. While it is up and running, however, there are still a few modifications that I would like to make before final deployment.
 1. I have ratings data for the rest of the users in the U.S. that I would like to incorporate into the model, but I haven't yet figured out how to do so without slowing down the web app significantly.
 2. Add a "New to board gaming" feature to the web app that will allow people who are completely new to board games to use it.
-3. Add an NLP component to the model using game description data to assist in the classification of different board games. 
+3. Add an NLP component to the model using game description data to assist in the classification of different board games.
