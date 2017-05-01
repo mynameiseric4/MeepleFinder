@@ -1,5 +1,5 @@
 # MeepleFinder
-Board game recommender system to find new board games! Meeple Finder is up and running. Check it it at www.meepleboardgamefinder.com
+Board game recommender system to find new board games! Meeple Finder is up and running. Check it out at www.meepleboardgamefinder.com
 
 ![gif of web app](images/ModelVideoGIF3.gif)
 
