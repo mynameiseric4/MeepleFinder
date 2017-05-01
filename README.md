@@ -5,7 +5,7 @@ Board game recommender system to find new board games! Meeple Finder is up and r
 
 ## Business Understanding
 Whether you are into board games or not, board gaming is a growing industry with nearly $1.2 billion in sales in 2015 in the U.S. and Canada alone (https://icv2.com/articles/news/view/35150/hobby-games-market-nearly-1-2-billion).
-Also, new board games are being produced every week  making it hard to stay on top of what's available. Lastly, board games are expensive and bulky, so when you do but a new board game, you want to make sure it's the right one. This is where Meeple Finder comes in.
+Also, new board games are being produced every week  making it hard to stay on top of what's available. Lastly, board games are expensive and bulky, so when you do buy a new board game, you want to make sure it's the right one. This is where Meeple Finder comes in.
 
 ## Data Understanding
 The data I collected was from boardgamegeek.com. I scraped data for over 13,000 board games with such information as complexity, mechanisms, publishers, etc. I also collected user ratings data for every user in the state of Washington, about 1200 users.
